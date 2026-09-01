@@ -4,21 +4,23 @@ import { ProductsPage } from '../page-objects/products-page'
 import { CartPage } from '../page-objects/cart-page'
 import { CheckoutPage } from '../page-objects/checkout-pages'
 
+let loginPage: LoginPage
 test.describe('SauceDemo E2E Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
 
+    loginPage = new LoginPage(page)
+
     //Naviage to home Page
+
     await page.goto('/')
+    //Login
+    await loginPage.login("standard_user", "secret_sauce")
   })
 
   test('user can login, access Products page, and logout successfully', async ({ page }) => {
 
-    const loginPage = new LoginPage(page)
     const productsPage = new ProductsPage(page)
-
-    //Login
-    await loginPage.login("standard_user", "secret_sauce")
 
     //Verify successful Login
     await expect(page).toHaveURL(/inventory\.html/)
@@ -38,13 +40,9 @@ test.describe('SauceDemo E2E Test Suite', () => {
 
   test('user checkout single item', async ({ page }) => {
 
-    const loginPage = new LoginPage(page)
     const productsPage = new ProductsPage(page)
     const cartPage = new CartPage(page)
     const checkoutPage = new CheckoutPage(page)
-
-    //Login
-    await loginPage.login("standard_user", "secret_sauce")
 
     //Add Products to Cart
     const productNames = ['Sauce Labs Bike Light']
@@ -81,13 +79,9 @@ test.describe('SauceDemo E2E Test Suite', () => {
 
   test('user checkout multiple items', async ({ page }) => {
 
-    const loginPage = new LoginPage(page)
     const productsPage = new ProductsPage(page)
     const cartPage = new CartPage(page)
     const checkoutPage = new CheckoutPage(page)
-
-    //Login
-    await loginPage.login("standard_user", "secret_sauce")
 
     //Add Products to Cart
     const productNames = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Sauce Labs Onesie']
