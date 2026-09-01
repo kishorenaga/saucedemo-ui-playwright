@@ -9,18 +9,15 @@ test.describe('SauceDemo E2E Test Suite', () => {
 
   test.beforeEach(async ({ page }) => {
 
-    loginPage = new LoginPage(page)
+    //Navigate to products page
+    await page.goto('/inventory.html')
 
-    //Naviage to home Page
-
-    await page.goto('/')
-    //Login
-    await loginPage.login("standard_user", "secret_sauce")
   })
 
   test('user can login, access Products page, and logout successfully', async ({ page }) => {
 
     const productsPage = new ProductsPage(page)
+    loginPage = new LoginPage(page)
 
     //Verify successful Login
     await expect(page).toHaveURL(/inventory\.html/)
